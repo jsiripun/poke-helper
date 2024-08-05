@@ -1,0 +1,7 @@
+.container {
+    min-width: 100vw;
+    min-height: 100vw;
+    position: absolute;
+    overflow: hidden;
+    background-color: rgb(208, 204, 79);
+}
