@@ -1,9 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react'
-import Head from 'next/head';
-import Container from '../components/container';
 import useFetch from '../helpers/useFetch';
-import { capitalizeWord } from '@/helpers/utils';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { Autocomplete, TextField } from '@mui/material';
