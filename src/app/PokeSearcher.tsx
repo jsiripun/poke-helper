@@ -7,6 +7,7 @@ import { capitalizeWord } from '@/helpers/utils';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { Autocomplete, TextField } from '@mui/material';
+import PokeInfo from '@/components/PokeInfo';
 
 const item: SxProps<Theme> = {
     display: 'flex',
@@ -20,10 +21,8 @@ const item: SxProps<Theme> = {
 function PokeSearcher() {
     // const { data, error } = useFetch('https://pokeapi.co/api/v2/pokemon/ditto')
     const { data: allPokemon, error: allPokemonError } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
-    const { data: again, error: erroragain } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
     const [possiblePokemon, setPossiblePokemon] = useState<string[]>([]);
     const [pokemonSelected, setPokemonSelected] = useState('');
-    const [pokemonTypes, setPokemonTypes] = useState([]);
 
     useEffect(() => {
         if (allPokemon) {
@@ -38,6 +37,10 @@ function PokeSearcher() {
         }
     }, [allPokemon]);
 
+    const newPokemonSelected = (event: any) => {
+        setPokemonSelected(event.target.innerText);
+    }
+
     if (allPokemonError) return (<Container><div>Failed to load</div></Container>)
     if (!allPokemon) return (<Container><div>Loading...</div></Container>)
 
@@ -50,7 +53,9 @@ function PokeSearcher() {
                 options={possiblePokemon}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Pokemon" />}
+                onChange={newPokemonSelected}
             />
+            {pokemonSelected ? (<PokeInfo pokemonName={pokemonSelected}/>) : null}
         </Container>
     )
 }
