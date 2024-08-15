@@ -1,13 +1,11 @@
 "use client";
 import { useState, useEffect } from 'react'
 import useFetch from '../helpers/useFetch';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
-import { Autocomplete, TextField } from '@mui/material';
+import PokeType from './PokeType';
+import { capitalizeWord } from '@/helpers/utils';
 
 
-function PokeInfo(props: {pokemonName: string}) {
-    console.log(props)
+function PokeInfo(props: { pokemonName: string }) {
     const { data: selectedPokemonInfo, error: selectedPokemonInfoError } = useFetch(`https://pokeapi.co/api/v2/pokemon/${props.pokemonName.toLowerCase()}/`);
     const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
 
@@ -15,18 +13,24 @@ function PokeInfo(props: {pokemonName: string}) {
         if (selectedPokemonInfo) {
             const selectedTypes: string[] = []
             selectedPokemonInfo.types.map((type: any) => {
-               selectedTypes.push(type)
+                selectedTypes.push(capitalizeWord(type.type.name))
             })
 
             setPokemonTypes(selectedTypes)
         }
     }, [selectedPokemonInfo]);
 
-    console.log(selectedPokemonInfo)
-    console.log(pokemonTypes)
 
     return (<div>
-        <p></p>
+        <p>{props.pokemonName}</p>
+        {pokemonTypes.map(type => {
+            return (
+                <div>
+                    <p>{type}</p>
+                    <PokeType typeName={type} />
+                </div>
+            )
+        })}
     </div>)
 
 

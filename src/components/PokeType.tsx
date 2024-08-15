@@ -6,24 +6,26 @@ import { Theme } from '@mui/material/styles';
 import { Autocomplete, TextField } from '@mui/material';
 
 
-function PokeType(props: {typeName: string}) {
+function PokeType(props: { typeName: string }) {
     console.log(props)
-    const { data: selectedType, error: selectedTypeError } = useFetch(`https://pokeapi.co/api/v2/type/${props.typeName.toLowerCase()}/`);
-    const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
+    const { data: selectedTypeInfo, error: selectedTypeInfoError } = useFetch(`https://pokeapi.co/api/v2/type/${props.typeName.toLowerCase()}/`);
+    const [pokemonWeaknessTypes, setPokemonWeaknessTypes] = useState<string[]>([]);
 
-    // useEffect(() => {
-    //     if (selectedPokemonInfo) {
-    //         const selectedTypes: string[] = []
-    //         selectedPokemonInfo.types.map((type: any) => {
-    //            selectedTypes.push(type)
-    //         })
+    console.log(selectedTypeInfo);
 
-    //         setPokemonTypes(selectedTypes)
-    //     }
-    // }, [selectedPokemonInfo]);
+    useEffect(() => {
+        if (selectedTypeInfo) {
+            const selectedTypes: string[] = []
+            selectedTypeInfo.damage_relations.map((type: any) => {
+                selectedTypes.push(type)
+            })
 
-    // console.log(selectedPokemonInfo)
-    console.log(pokemonTypes)
+            setPokemonWeaknessTypes(selectedTypes)
+        }
+    }, [selectedTypeInfo]);
+
+    // console.log(selectedTypeInfo)
+    // console.log(pokemonWeaknessTypes)
 
     return (<div>
         <p></p>
