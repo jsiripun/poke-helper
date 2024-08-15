@@ -8,6 +8,7 @@ import { capitalizeWord } from '@/helpers/utils';
 function PokeInfo(props: { pokemonName: string }) {
     const { data: selectedPokemonInfo, error: selectedPokemonInfoError } = useFetch(`https://pokeapi.co/api/v2/pokemon/${props.pokemonName.toLowerCase()}/`);
     const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
+    const [pokemonWeakness, setPokemonWeakness] = useState<string[]>([]);
 
     useEffect(() => {
         if (selectedPokemonInfo) {
@@ -17,20 +18,50 @@ function PokeInfo(props: { pokemonName: string }) {
             })
 
             setPokemonTypes(selectedTypes)
+            console.log("resetting weaknesses")
+            setPokemonWeakness([])
         }
     }, [selectedPokemonInfo]);
 
 
-    return (<div>
+    useEffect(() => {
+       console.log("weakness changed");
+       console.log(pokemonWeakness)
+    }, [pokemonWeakness]);
+
+    const settingPokeWeakness = (weaknesses: string[]) => {
+        console.log("inside the settingpokeweakness")
+        setPokemonWeakness(weaknesses)
+    }
+
+    console.log(pokemonWeakness)
+    return (
+    <div>
         <p>{props.pokemonName}</p>
+        <p>Selected Types:</p>
         {pokemonTypes.map(type => {
-            return (
-                <div>
+            return ( <div>
                     <p>{type}</p>
-                    <PokeType typeName={type} />
+                    <PokeType pokeWeakness={pokemonWeakness} setPokeWeakness={settingPokeWeakness} typeName={type} />
                 </div>
             )
         })}
+        {/* {pokemonTypes.map(type => {
+            return (
+                    <p>{type}</p>
+            )
+        })}  */}
+        <br/>
+        <p>Weaknesses:</p>
+        {/* {pokemonWeakness.map(type => {
+            return (
+                <PokeType pokeWeakness={pokemonWeakness} setPokeWeakness={setPokemonWeakness} typeName={type} />
+            )
+        })} */}
+        {pokemonWeakness.map(weakness => {
+            return (<p>{weakness}</p>)
+        })}
+
     </div>)
 
 

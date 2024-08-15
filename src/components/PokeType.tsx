@@ -1,35 +1,44 @@
 "use client";
 import { useState, useEffect } from 'react'
 import useFetch from '../helpers/useFetch';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
-import { Autocomplete, TextField } from '@mui/material';
+import { capitalizeWord } from '@/helpers/utils';
 
 
-function PokeType(props: { typeName: string }) {
-    console.log(props)
+function PokeType(props: { typeName: string, pokeWeakness: string[], setPokeWeakness: any }) {
     const { data: selectedTypeInfo, error: selectedTypeInfoError } = useFetch(`https://pokeapi.co/api/v2/type/${props.typeName.toLowerCase()}/`);
-    const [pokemonWeaknessTypes, setPokemonWeaknessTypes] = useState<string[]>([]);
-
-    console.log(selectedTypeInfo);
+    const [pokemonLocalWeakness, setPokemonLocalWeakness] = useState<string[]>([]);
 
     useEffect(() => {
         if (selectedTypeInfo) {
-            const selectedTypes: string[] = []
-            selectedTypeInfo.damage_relations.map((type: any) => {
-                selectedTypes.push(type)
+            setPokemonLocalWeakness(props.pokeWeakness);
+
+            console.log(props.typeName);
+            const selectedTypes: string[] = [...props.pokeWeakness];
+            console.log(selectedTypes);
+            console.log(selectedTypeInfo);
+            selectedTypeInfo.damage_relations.double_damage_from.map((type: any) => {
+                const typeCapitalized = capitalizeWord(type.name)
+                selectedTypes.includes(typeCapitalized) ? null : selectedTypes.push(typeCapitalized)
             })
 
-            setPokemonWeaknessTypes(selectedTypes)
+            console.log(selectedTypes);
+            props.setPokeWeakness(selectedTypes)
+            setPokemonLocalWeakness(selectedTypes)
         }
     }, [selectedTypeInfo]);
 
-    // console.log(selectedTypeInfo)
-    // console.log(pokemonWeaknessTypes)
-
-    return (<div>
-        <p></p>
-    </div>)
+    return (
+    // <div>
+    //     {props.pokeWeakness.map(weakness => {
+    //         return (
+    //             <div key={weakness}>
+    //                 <p>{weakness}</p>
+    //             </div>
+    //         )
+    //     })}
+    //     </div>
+    null
+        );
 
 
 }
