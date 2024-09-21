@@ -6,7 +6,7 @@ import useFetch from '../helpers/useFetch';
 import { capitalizeWord } from '@/helpers/utils';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, Grid, CircularProgress } from '@mui/material';
 import PokeInfo from '@/components/PokeInfo';
 
 const item: SxProps<Theme> = {
@@ -47,15 +47,27 @@ function PokeSearcher() {
     return (
         <Container style={{ 'fontFamily': 'Courier New', 'padding': '5vw 10vw 5vw 10vw' }}>
             <Head><title>Pokemon</title></Head>
-            <Autocomplete
-                disablePortal
-                id="pokemon-input"
-                options={possiblePokemon}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Pokemon" />}
-                onChange={newPokemonSelected}
-            />
-            {pokemonSelected ? (<PokeInfo pokemonName={pokemonSelected}/>) : null}
+            <Grid container spacing={3}>
+                <Grid item xs={2}></Grid>
+                <Grid item xs={8}>
+                    {possiblePokemon ? <Autocomplete
+                        disablePortal
+                        id="pokemon-input"
+                        options={possiblePokemon}
+                        sx={{
+                            width: 300, backgroundColor: "grey", borderWidth: "5px", margin: "auto"
+                        }}
+                        renderInput={(params) => <TextField {...params} label="Pokemon" />}
+                        onChange={newPokemonSelected}
+                    /> : <CircularProgress />}
+                </Grid>
+                <Grid item xs={2}></Grid>
+                <Grid item xs={12}>
+                    {pokemonSelected ? (<PokeInfo pokemonName={pokemonSelected} />) : null}
+                </Grid>
+            </Grid>
+
+
         </Container>
     )
 }
